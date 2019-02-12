@@ -1,10 +1,10 @@
 package com.company;
 
-import java.io.*;
-import java.net.*;
-
 public class Main {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello World");
+        String url = "https://en.wikipedia.org/wiki/Main_Page";//args[0];
+        IHttpClient client = HttpClient.getInstance();
+        String html = client.get(url);
+        System.out.println(html);
     }
 }
