@@ -1,35 +1,27 @@
 package com.company;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import org.jsoup.Connection;
+import org.jsoup.Connection.Response;
+import org.jsoup.Jsoup;
 
+class HttpClient{
 
-public class HttpClient implements IHttpClient {
-
-    private static HttpClient client;
+    private static HttpClient instance;
 
     private HttpClient() {
     }
 
     static synchronized HttpClient getInstance() {
-        if (client == null) {
-            client = new HttpClient();
+        if (instance == null) {
+            instance = new HttpClient();
         }
-        return client;
+        return instance;
     }
 
-    @Override
-    public String get(String urlToRead) throws Exception{
-        StringBuilder result = new StringBuilder();
-        URL url = new URL(urlToRead);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        rd.close();
-        return result.toString();
+    Response get(String url) throws IOException{
+        Connection conn = Jsoup.connect(url);
+        conn.ignoreContentType(true);
+        return conn.execute();
     }
 }
