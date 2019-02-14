@@ -33,6 +33,9 @@ class FileSystem {
 
 
     void writeToFile(String fileName, String text) throws FileNotFoundException {
+        // NOTE: there is not specification for collission between two urls
+        //       (for examples http://foo.com and http://foo.com/home)
+        //        so I decided by myself to override the old one.
         String shortFileName = shortenFileName(fileName);
         try (PrintWriter out = new PrintWriter("./downloads/" + shortFileName)) {
             out.println(text);
